@@ -9,12 +9,13 @@ function onReady(){
 }// END onReady
 
 function setupClickListeners(){
-    $('#addTaskBtn').on('click', handleAddTask);
+    $('#addTaskBtn').on('click', addTask);
     $('#taskTable').on('click', '.statusCheckbox', toggleComplete );
+    $('#taskTable').on('click', '.deleteTaskBtn', deleteTask );
 } // END setupClickListeners
 
 
-function handleAddTask(){
+function addTask(){
     console.log('in handleAddTask');
 
     let taskToSend = {
@@ -26,26 +27,6 @@ function handleAddTask(){
     clearInputs();
 
 } // END handleAddTask
-
-
-function toggleComplete(){
-
-    const id = $(this).parent().parent().data('id');
-    const taskStatus = $(this).data('completed');
-
-    console.log('task id: ', id, 'task status is:', taskStatus, 'newStatus is: ', !taskStatus);
-    
-    $.ajax({
-        type: 'PUT',
-        url: `/tasks/${id}`,
-        data: { newStatus: !taskStatus }
-    }).then(function (response) {
-        console.log('back from PUT:', response);
-        getTasks();
-    }).catch(function (err) {
-        alert('error updating:', err);
-    })
-} // END toggleComplete
 
 
 function getTasks(){
@@ -77,6 +58,42 @@ function saveTask(newTask){
         alert('error posting:', err);
     })
 } // END saveTask
+
+
+function toggleComplete() {
+
+    const id = $(this).parent().parent().data('id');
+    const taskStatus = $(this).data('completed');
+
+    console.log('task id: ', id, 'task status is:', taskStatus, 'newStatus is: ', !taskStatus);
+
+    $.ajax({
+        type: 'PUT',
+        url: `/tasks/${id}`,
+        data: { newStatus: !taskStatus }
+    }).then(function (response) {
+        console.log('back from PUT:', response);
+        getTasks();
+    }).catch(function (err) {
+        alert('error updating:', err);
+    })
+} // END toggleComplete
+
+
+function deleteTask(){
+
+    let id = $(this).parent().parent().data('id');
+    console.log('in deleteTask, id: ', id);
+    
+    $.ajax({
+        type: 'DELETE',
+        url: `/tasks/${id}`
+    }).then(function(){
+        getTasks();
+    }).catch(function(err){
+        alert('error deleting:', err)
+    })
+} // END deleteTask
 
 
 function renderTasks(arrayOfTasks){
@@ -128,6 +145,7 @@ function renderTasks(arrayOfTasks){
 
     }); 
 } // END renderTasks
+
 
 function clearInputs(){
     $('#taskIn').val('');
