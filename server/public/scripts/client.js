@@ -31,22 +31,21 @@ function handleAddTask(){
 function toggleComplete(){
 
     const id = $(this).parent().parent().data('id');
+    const taskStatus = $(this).data('completed');
+
+    console.log('task id: ', id, 'task status is:', taskStatus, 'newStatus is: ', !taskStatus);
     
-    const taskStatus = $(this).data('status');
-    
-    console.log('in toggleStatus:', id, taskStatus);
-    // $.ajax({
-    //     type: 'PUT',
-    //     url: `/tasks/${id}`,
-    //     data: { newStatus: !taskStatus }
-    // }).then(function (response) {
-    //     console.log('back from PUT:', response);
-    //     getItems();
-    // }).catch(function (err) {
-    //     alert('error updating:', err);
-    // })
-    
-}
+    $.ajax({
+        type: 'PUT',
+        url: `/tasks/${id}`,
+        data: { newStatus: !taskStatus }
+    }).then(function (response) {
+        console.log('back from PUT:', response);
+        getTasks();
+    }).catch(function (err) {
+        alert('error updating:', err);
+    })
+} // END toggleComplete
 
 
 function getTasks(){
@@ -57,8 +56,11 @@ function getTasks(){
         url: '/tasks'
     }).then(function (response) {
         renderTasks(response);
+    }).catch(function (err) {
+        alert('error getting:', err);
     })
 } // END getTasks
+
 
 function saveTask(newTask){
     console.log('in saveTask');
@@ -71,6 +73,8 @@ function saveTask(newTask){
         }
     }).then(function() {
         getTasks();
+    }).catch(function (err) {
+        alert('error posting:', err);
     })
 } // END saveTask
 
@@ -82,10 +86,15 @@ function renderTasks(arrayOfTasks){
 
     //loop through array
     arrayOfTasks.forEach(task => {
-        $('#taskTable').append(`
+        console.log('looping through the array completed status is:', task.completed);
+        
+        if(task.completed == false){
+            console.log('in if statement for completed = false');
+            
+            $('#taskTable').append(`
             <tr data-id="${task.id}">
                 <td>
-                    <input type="checkbox" class="statusCheckbox" id="checkbox${task.id}" data-status="${task.completed}" name="${task.task}" value="${task.task}" />
+                    <input type="checkbox" class="statusCheckbox" id="checkbox${task.id}" data-completed="${task.completed}" name="${task.task}" value="${task.task}" />
                 </td>
                 <td>
                     <label class="taskItem" for="checkbox${task.id}">${task.task}</label>
@@ -95,7 +104,29 @@ function renderTasks(arrayOfTasks){
                 </td>
             </tr>
         `)
-    });
+        } // END if FALSE
+        else if(task.completed == true){
+            console.log('in else if statement for completed = true');
+
+            $('#taskTable').append(`
+            <tr data-id="${task.id}">
+                <td>
+                    <input type="checkbox" class="statusCheckbox" id="checkbox${task.id}" data-completed="${task.completed}" name="${task.task}" value="${task.task}" checked />
+                </td>
+                <td>
+                    <label class="taskItem" for="checkbox${task.id}">${task.task}</label>
+                </td>
+                <td>
+                    <button type="button" class="deleteTaskBtn">Delete</button>
+                </td>
+            </tr>
+        `)
+        } // END else if TRUE
+        else{
+            console.log('error with completed status');
+        } // END else error
+
+    }); 
 } // END renderTasks
 
 function clearInputs(){

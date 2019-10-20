@@ -43,8 +43,10 @@ router.post('/', (req, res) => {
 // PUT
 router.put('/:id', (req, res) => {
     console.log('/tasks PUT:', req.params.id, req.body);
+    console.log('updated status of:', req.params.id, 'is: ', req.body.newStatus );
+    
 
-    const query = `UPDATE "tasks" SET "status" = $1
+    const query = `UPDATE "tasks" SET "completed" = $1
     WHERE "id" = $2;`;
 
     const values = [req.body.newStatus, req.params.id];
