@@ -27,7 +27,7 @@ router.post('/', (req, res) => {
 
     const query = `INSERT INTO "tasks" ("task")
     VALUES($1);`;
-    
+
     const values = [req.body.task];
 
     pool.query(query, values)
@@ -43,8 +43,8 @@ router.post('/', (req, res) => {
 // PUT
 router.put('/:id', (req, res) => {
     console.log('/tasks PUT:', req.params.id, req.body);
-    console.log('updated status of:', req.params.id, 'is: ', req.body.newStatus );
-    
+    console.log('updated status of:', req.params.id, 'is: ', req.body.newStatus);
+
 
     const query = `UPDATE "tasks" SET "completed" = $1
     WHERE "id" = $2;`;

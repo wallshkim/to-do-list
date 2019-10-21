@@ -7,33 +7,48 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="vendors/jquery.js"></script>
     <script src="scripts/client.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Lora|Poppins&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="vendors/pretty-checkbox.css">
     <link rel="stylesheet" href="vendors/bootstrap.css">
     <link rel="stylesheet" href="style.css">
     <title>SQL To-Do List</title>
 </head>
 
-<body>
-    <h1>To-Do List</h1>
 
-    <div class="addTaskContainer">
-        <button type="button" id="addTaskBtn">+</button>
-        <input type="text" id="taskIn" placeholder="Add a task" />
+<body>
+    <div id="backgroundContainer">
+        <img src="images/hotairballons.png" alt="hot air balloons">
     </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody id="taskTable">
+    <div id="centerContainer">
+        <div class="jumbotron">
+            <h1>Tasks</h1>
+        </div>
 
-        </tbody>
-    </table>
+        <div class="addTaskContainer input-group mb-3">
+            <input type="text" class="form-control" id="taskIn" placeholder="Add a task">
+            <div class="input-group-append">
+                <button class="btn btn-success" type="button" id="addTaskBtn">+</button>
+            </div>
+        </div>
+    </div>
 
-    <!-- <button type="button" class="completeBtn">Complete</button>
-    <button type="button" class="deleteBtn">Delete</button> -->
+    <div id="centerContainer">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="taskTable">
+
+            </tbody>
+        </table>
+    </div>
+
 </body>
 
 </html>

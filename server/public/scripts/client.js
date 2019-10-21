@@ -2,21 +2,21 @@ console.log('js sourced');
 
 $(document).ready(onReady);
 
-function onReady(){
+function onReady() {
     console.log('jQuery sourced');
     setupClickListeners();
     getTasks();
 }// END onReady
 
-function setupClickListeners(){
+function setupClickListeners() {
     $('#addTaskBtn').on('click', addTask);
-    $('#taskTable').on('click', '.statusCheckbox', toggleComplete );
-    $('#taskTable').on('click', '.deleteTaskBtn', deleteTask );
+    $('#taskTable').on('click', '.statusCheckbox', toggleComplete);
+    $('#taskTable').on('click', '.deleteTaskBtn', deleteTask);
 } // END setupClickListeners
 
 
-function addTask(){
-    console.log('in handleAddTask');
+function addTask() {
+    console.log('in addTask');
 
     let taskToSend = {
         task: $('#taskIn').val(),
@@ -29,7 +29,7 @@ function addTask(){
 } // END handleAddTask
 
 
-function getTasks(){
+function getTasks() {
     console.log('in getTasks');
     // ajax call to server to get tasks
     $.ajax({
@@ -43,16 +43,16 @@ function getTasks(){
 } // END getTasks
 
 
-function saveTask(newTask){
+function saveTask(newTask) {
     console.log('in saveTask');
-    
+
     $.ajax({
         type: 'POST',
         url: '/tasks',
         data: {
             task: newTask.task
         }
-    }).then(function() {
+    }).then(function () {
         getTasks();
     }).catch(function (err) {
         alert('error posting:', err);
@@ -62,7 +62,7 @@ function saveTask(newTask){
 
 function toggleComplete() {
 
-    const id = $(this).parent().parent().data('id');
+    const id = $(this).closest('tr').data('id');
     const taskStatus = $(this).data('completed');
 
     console.log('task id: ', id, 'task status is:', taskStatus, 'newStatus is: ', !taskStatus);
@@ -80,23 +80,23 @@ function toggleComplete() {
 } // END toggleComplete
 
 
-function deleteTask(){
+function deleteTask() {
 
-    let id = $(this).parent().parent().data('id');
+    let id = $(this).closest('tr').data('id');
     console.log('in deleteTask, id: ', id);
-    
+
     $.ajax({
         type: 'DELETE',
         url: `/tasks/${id}`
-    }).then(function(){
+    }).then(function () {
         getTasks();
-    }).catch(function(err){
+    }).catch(function (err) {
         alert('error deleting:', err)
     })
 } // END deleteTask
 
 
-function renderTasks(arrayOfTasks){
+function renderTasks(arrayOfTasks) {
     console.log('in renderTasks');
     // clear existing table body
     $('#taskTable').empty();
@@ -104,49 +104,55 @@ function renderTasks(arrayOfTasks){
     //loop through array
     arrayOfTasks.forEach(task => {
         console.log('looping through the array completed status is:', task.completed);
-        
-        if(task.completed == false){
+
+        if (task.completed == false) {
             console.log('in if statement for completed = false');
-            
+
             $('#taskTable').append(`
-            <tr data-id="${task.id}">
-                <td>
-                    <input type="checkbox" class="statusCheckbox" id="checkbox${task.id}" data-completed="${task.completed}" name="${task.task}" value="${task.task}" />
+            <tr class="tableRow" data-id="${task.id}">
+                <td class="taskDataCell">
+                    <div class="pretty p-icon p-round p-jelly">
+                        <input type="checkbox" class="statusCheckbox incomplete" id="checkbox${task.id}" data-completed="${task.completed}" name="${task.task}" value="${task.task}" />
+                        <div class="state p-success">
+                            <i class="icon material-icons">done</i>
+                            <label class="taskItem" for="checkbox${task.id}">${task.task}</label>
+                        </div>
+                    </div>
                 </td>
                 <td>
-                    <label class="taskItem" for="checkbox${task.id}">${task.task}</label>
-                </td>
-                <td>
-                    <button type="button" class="deleteTaskBtn">Delete</button>
+                    <button type="button" class="deleteTaskBtn btn btn-outline-danger">X</button>
                 </td>
             </tr>
         `)
         } // END if FALSE
-        else if(task.completed == true){
+        else if (task.completed == true) {
             console.log('in else if statement for completed = true');
 
             $('#taskTable').append(`
-            <tr data-id="${task.id}">
-                <td>
-                    <input type="checkbox" class="statusCheckbox" id="checkbox${task.id}" data-completed="${task.completed}" name="${task.task}" value="${task.task}" checked />
+            <tr class="tableRow" data-id="${task.id}">
+                <td class="taskDataCell">
+                    <div class="pretty p-icon p-round p-jelly">
+                        <input type="checkbox" class="statusCheckbox completed" id="checkbox${task.id}" data-completed="${task.completed}" name="${task.task}" value="${task.task}" checked />
+                        <div class="state p-success">
+                            <i class="icon material-icons">done</i>
+                            <label class="completedTaskItem" for="checkbox${task.id}">${task.task}</label>
+                        </div>
+                    </div>
                 </td>
                 <td>
-                    <label class="taskItem" for="checkbox${task.id}">${task.task}</label>
-                </td>
-                <td>
-                    <button type="button" class="deleteTaskBtn">Delete</button>
+                    <button type="button" class="deleteTaskBtn btn btn-outline-danger">X</button>
                 </td>
             </tr>
         `)
         } // END else if TRUE
-        else{
+        else {
             console.log('error with completed status');
         } // END else error
 
-    }); 
+    });
 } // END renderTasks
 
 
-function clearInputs(){
+function clearInputs() {
     $('#taskIn').val('');
 } // END clearInputs
