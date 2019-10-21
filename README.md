@@ -17,7 +17,7 @@ This 'TO-DO' application allows a user to create tasks, view all current tasks, 
 
 ## Usage
 1. User enters new task and clicks the '+' button to add the task to the list.
-2. User can click the checkbox to mark as task as completed which will cross task out change color to gray.
+2. User can click the checkbox to mark task as completed which will cross task out change color to gray.
 3. User can delete a task by clicking the 'X' button.
 
 ## Built With
