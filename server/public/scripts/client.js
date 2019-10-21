@@ -55,6 +55,7 @@ function saveTask(newTask) {
     })
 } // END saveTask
 
+
 /* put request to update completed status in database*/
 function toggleComplete() {
     const id = $(this).closest('tr').data('id');
@@ -108,14 +109,12 @@ function renderTasks(arrayOfTasks) {
                     </div>
                 </td>
                 <td>
-                    <button type="button" class="deleteTaskBtn btn btn-outline-danger">X</button>
+                    <button type="button" data-toggle="modal" data-target="#exampleModal" class="deleteTaskBtn btn btn-outline-danger">X</button>
                 </td>
             </tr>
         `)
         } // END if FALSE
         else if (task.completed == true) {
-            console.log('in else if statement for completed = true');
-
             $('#taskTable').append(`
             <tr class="tableRow" data-id="${task.id}">
                 <td class="taskDataCell">
@@ -128,7 +127,7 @@ function renderTasks(arrayOfTasks) {
                     </div>
                 </td>
                 <td>
-                    <button type="button" class="deleteTaskBtn btn btn-outline-danger">X</button>
+                    <button type="button" data-toggle="modal" data-target="#exampleModal" class="deleteTaskBtn btn btn-outline-danger">X</button>
                 </td>
             </tr>
         `)
