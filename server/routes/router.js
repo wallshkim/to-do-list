@@ -7,8 +7,6 @@ const pool = require('../modules/pool.js');
 
 // GET
 router.get('/', (req, res) => {
-    console.log('/tasks GET');
-
     const query = 'SELECT * FROM tasks ORDER BY "id";';
 
     pool.query(query).then((results) => {
@@ -23,8 +21,6 @@ router.get('/', (req, res) => {
 
 // POST
 router.post('/', (req, res) => {
-    console.log('/tasks INSERT:', req.body.task);
-
     const query = `INSERT INTO "tasks" ("task")
     VALUES($1);`;
 
@@ -42,10 +38,6 @@ router.post('/', (req, res) => {
 
 // PUT
 router.put('/:id', (req, res) => {
-    console.log('/tasks PUT:', req.params.id, req.body);
-    console.log('updated status of:', req.params.id, 'is: ', req.body.newStatus);
-
-
     const query = `UPDATE "tasks" SET "completed" = $1
     WHERE "id" = $2;`;
 
@@ -62,8 +54,6 @@ router.put('/:id', (req, res) => {
 
 // DELETE
 router.delete('/:id', (req, res) => {
-    console.log('/tasks DELETE:', req.params.id);
-
     const query = `DELETE FROM "tasks"
     WHERE "id" = $1;`;
 
@@ -77,7 +67,6 @@ router.delete('/:id', (req, res) => {
             res.sendStatus(500);
         });
 }); // END DELETE ROUTE
-
 
 
 module.exports = router;

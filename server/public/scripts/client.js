@@ -1,13 +1,13 @@
-console.log('js sourced');
-
 $(document).ready(onReady);
 
+
 function onReady() {
-    console.log('jQuery sourced');
     setupClickListeners();
     getTasks();
 }// END onReady
 
+
+/* sets up all click listeners */
 function setupClickListeners() {
     $('#addTaskBtn').on('click', addTask);
     $('#taskTable').on('click', '.statusCheckbox', toggleComplete);
@@ -15,23 +15,20 @@ function setupClickListeners() {
 } // END setupClickListeners
 
 
+/* gets value of taskIn input and runs saveTask to add it to the database
+then clears input field */
 function addTask() {
-    console.log('in addTask');
-
     let taskToSend = {
         task: $('#taskIn').val(),
     };
 
-    // call saveTask with new task object
     saveTask(taskToSend);
     clearInputs();
-
 } // END handleAddTask
 
 
+/* get request to return all database rows */
 function getTasks() {
-    console.log('in getTasks');
-    // ajax call to server to get tasks
     $.ajax({
         type: 'GET',
         url: '/tasks'
@@ -43,9 +40,8 @@ function getTasks() {
 } // END getTasks
 
 
+/* post request to add new task to database*/
 function saveTask(newTask) {
-    console.log('in saveTask');
-
     $.ajax({
         type: 'POST',
         url: '/tasks',
@@ -59,13 +55,10 @@ function saveTask(newTask) {
     })
 } // END saveTask
 
-
+/* put request to update completed status in database*/
 function toggleComplete() {
-
     const id = $(this).closest('tr').data('id');
     const taskStatus = $(this).data('completed');
-
-    console.log('task id: ', id, 'task status is:', taskStatus, 'newStatus is: ', !taskStatus);
 
     $.ajax({
         type: 'PUT',
@@ -80,10 +73,9 @@ function toggleComplete() {
 } // END toggleComplete
 
 
+/* delete request to delete table row from database when delete button is clicked */
 function deleteTask() {
-
     let id = $(this).closest('tr').data('id');
-    console.log('in deleteTask, id: ', id);
 
     $.ajax({
         type: 'DELETE',
@@ -96,18 +88,14 @@ function deleteTask() {
 } // END deleteTask
 
 
+/* Empties table body then loops through array from GET request
+if completed is marked as FALSE,it appends an unchecked box and a delete button to DOM
+if completed it marked TRUE, it appends a checked box and a delete buttons to DOM */
 function renderTasks(arrayOfTasks) {
-    console.log('in renderTasks');
-    // clear existing table body
     $('#taskTable').empty();
 
-    //loop through array
     arrayOfTasks.forEach(task => {
-        console.log('looping through the array completed status is:', task.completed);
-
         if (task.completed == false) {
-            console.log('in if statement for completed = false');
-
             $('#taskTable').append(`
             <tr class="tableRow" data-id="${task.id}">
                 <td class="taskDataCell">
@@ -148,11 +136,11 @@ function renderTasks(arrayOfTasks) {
         else {
             console.log('error with completed status');
         } // END else error
-
     });
 } // END renderTasks
 
 
+/* Clears the add task input field */
 function clearInputs() {
     $('#taskIn').val('');
 } // END clearInputs
